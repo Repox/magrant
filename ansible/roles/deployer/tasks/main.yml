@@ -1,0 +1,7 @@
+---
+
+- name: Download Deployer
+  get_url:
+    url: https://deployer.org/deployer.phar
+    dest: /usr/local/bin/dep
+    mode: a+x

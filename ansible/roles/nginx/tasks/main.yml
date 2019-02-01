@@ -1,0 +1,16 @@
+---
+
+- name: Installing Nginx
+  apt: name=nginx update_cache=yes
+
+- name: Copying virtual host file
+  template: src=files/vagrant.j2 dest=/etc/nginx/sites-available/vagrant owner=root group=root mode=0644
+
+- name: Creating symlink for virtual host file
+  file: src=/etc/nginx/sites-available/vagrant dest=/etc/nginx/sites-enabled/vagrant owner=root group=root state=link
+
+- name: Removing default website
+  file: path=/etc/nginx/sites-enabled/default state=absent
+
+- name: Restart Nginx
+  service: name=nginx state=restarted

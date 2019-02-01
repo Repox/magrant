@@ -1,0 +1,22 @@
+---
+
+- name: Install build-essential
+  apt: name=build-essential state=present
+
+- name: Install libssl-dev
+  apt: name=libssl-dev state=present
+
+- name: Check if NodeJS 9.x installer script is downloaded
+  stat: path=/root/setup_8.x
+  register: st
+
+- name: Download NodeJS Installer
+  get_url: url=https://deb.nodesource.com/setup_9.x dest=/root/setup_9.x validate_certs=no
+  when: st.stat.exists == False
+
+- name: Run NodeJS Repo Installer
+  shell: bash /root/setup_9.x
+  when: st.stat.exists == False
+
+- name: Install NodeJS
+  apt: name=nodejs state=present

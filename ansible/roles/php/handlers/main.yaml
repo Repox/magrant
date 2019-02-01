@@ -1,0 +1,16 @@
+---
+
+- name: start phpfpm
+  service:
+    name: php7.2-fpm
+    state: started
+
+- name: restart phpfpm
+  service:
+    name: php7.2-fpm
+    state: restarted
+
+- name: stop phpfp,
+  service:
+    name: php7.2-fpm
+    state: stopped

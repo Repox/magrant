@@ -1,0 +1,25 @@
+---
+
+- name: Adding Ondrej PPA
+  apt_repository: 
+    repo: 'ppa:ondrej/php'
+
+- name: Updating repository and installing PHP packages
+  apt: 
+    name: ['zip', 'unzip', 'php7.2-intl', 'php7.2-soap', 'php7.2-bcmath', 'php7.2-fpm', 'php7.2-cli', 'php7.2-ssh2', 'php7.2-mysqlnd', 'php7.2-curl', 'php7.2-gd', 'php7.2-mbstring', 'php7.2-xml', 'php7.2-zip', 'memcached', 'php-memcached'] 
+    update_cache: yes
+ 
+- name: Configuring pool
+  copy: 
+    src: files/vagrant.pool.conf 
+    dest: /etc/php/7.2/fpm/pool.d/vagrant.conf 
+    owner: root 
+    group: root 
+    mode: 0644
+  notify:
+    restart phpfpm
+
+
+#- name: Configuring Xdebug
+# template: src=files/xdebug.ini.j2 dest=/etc/php/7.2/mods-available/xdebug.ini owner=root group=root mode=0644
+

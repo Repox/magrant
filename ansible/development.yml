@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  become: yes
+  become_user: root
+  roles:
+    #- elasticsearch
+    #- git
+    #- redis
+    #- php
+    #- nodejs
+    #- composer
+    #- deployer
+    #- nginx
+    #- mysql
+    - swap

@@ -1,0 +1,28 @@
+---
+
+- name: Check if swap is registered
+  stat: path=swap
+  register: st
+
+
+- name: Allocate 1G for swap
+  shell: fallocate -l 1G /swapfile
+  when: st.stat.exists == False
+
+- name: Change mode on swapfile
+  file:
+    path: /swapfile
+    mode: 0600
+
+- name: Setup swap area
+  shell: mkswap /swapfile
+  when: st.stat.exists == False
+  
+- name: Activate swap
+  shell: swapon /swapfile
+  when: st.stat.exists == False
+
+- name: Register swap in fstab
+  lineinfile:
+    dest: /etc/fstab
+    line: '/swapfile swap swap defaults 0 0'

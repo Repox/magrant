@@ -1,0 +1,9 @@
+---
+
+mysql_root_user: root
+mysql_root_pass: root
+mysql_db_user: vagrant
+mysql_db_pass: vagrant
+
+mysql_databases:
+    - vagrant

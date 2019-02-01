@@ -1,0 +1,24 @@
+---
+
+- name: Install Elasticsearch dependencies
+  apt:
+    name: ['apt-transport-https', 'openjdk-11-jre']
+    update_cache: yes
+
+- name: Add APT Key for Elasticsearch
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Add Elasticsearch repository
+  apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/6.x/apt stable main
+    filename: /etc/apt/sources.list.d/elastic-6.x.list
+    state: present
+
+- name: Install Elasticsearch packages
+  apt:
+    name: elasticsearch
+    update_cache: yes
+  notify:
+    - start elasticsearch

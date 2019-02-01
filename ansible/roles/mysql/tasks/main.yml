@@ -1,0 +1,35 @@
+---
+
+- name: Install Python MySQLDB bindings module
+  apt: name=python-mysqldb state=present
+
+- name: Set root password for MySQL
+  shell: echo mysql-server mysql-server/root_password password {{ mysql_root_user }} | debconf-set-selections
+
+- name: Confirm root password for MySQL
+  shell: echo mysql-server mysql-server/root_password_again password {{ mysql_root_pass }} | debconf-set-selections
+
+- name: Installing software-properties-common
+  apt: name=software-properties-common state=present
+
+- name: Add PGP Key from Keyserver
+  apt_key: keyserver=keyserver.ubuntu.com id=0xF1656F24C74CD1D8
+
+- name: Add APT repository for MariaDB
+  apt_repository: repo='deb [arch=amd64,i386] http://mirrors.dotsrc.org/mariadb/repo/10.2/ubuntu yakkety main' state=present
+
+- name: Install MariaDB server
+  apt: name=mariadb-server update_cache=yes
+
+- name: Creating root .my.cnf
+  template: src=templates/my.cnf.j2 dest=/root/.my.cnf owner=root group=root
+
+- name: Creating root .my.cn
+  template: src=templates/my.cnf.j2 dest=/home/vagrant/.my.cnf owner=vagrant group=vagrant
+
+- name: Create databases
+  mysql_db: name={{ item }} state=present
+  with_items: "{{ mysql_databases }}"
+
+- name: Create mysql user
+  mysql_user: name="{{ mysql_db_user }}" password="{{ mysql_db_pass }}" priv=*.*:ALL,GRANT state=present
