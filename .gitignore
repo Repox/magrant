@@ -1,2 +1,5 @@
 .DS_Store
+.idea
 .vagrant
+ansible/development.retry
+application/
